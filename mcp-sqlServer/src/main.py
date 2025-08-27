@@ -1,21 +1,33 @@
 """
-Main entry point for the MCP SQL Server
+Main entry point for the MCP SQL Server with AI-enhanced query parsing
 """
 import sys
 from mcp.server.fastmcp import FastMCP
 from .config import MCP_PORT, SCHEMA_FILE_PATH
 from .schema_loader import SchemaLoader
 from .mcp_tools import MCPTools
+from .ai_config import get_ai_config
 
 
-def create_mcp_server():
-    """Create and configure the MCP server with all tools"""
+def create_mcp_server(ai_config_name: str = "rule_based_only"):
+    """Create and configure the MCP server with all tools
+    
+    Args:
+        ai_config_name: Name of AI configuration to use ('local_ai_only', 'cloud_ai_only', 'hybrid_ai', 'rule_based_only')
+    """
     # Initialize FastMCP server
     mcp = FastMCP("mssqlQuery", stateless_http=True, port=MCP_PORT)
     
-    # Initialize components
+    # Initialize components with AI configuration
     schema_loader = SchemaLoader(SCHEMA_FILE_PATH)
-    mcp_tools = MCPTools(schema_loader)
+    ai_config = get_ai_config(ai_config_name)
+    mcp_tools = MCPTools(schema_loader, ai_config)
+    
+    print(f"🚀 MCP Server initialized with AI config: {ai_config_name}")
+    if ai_config.get('use_ai'):
+        print(f"🤖 AI parsing enabled: {ai_config.get('ai_type', 'unknown')}")
+    else:
+        print("📋 Using rule-based parsing only")
     
     # Register MCP tools
     @mcp.tool()

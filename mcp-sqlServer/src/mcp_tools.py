@@ -1,24 +1,78 @@
 """
 MCP Tools implementation for SQL Server operations
 """
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 from .sql_client import MSSQLRestClient
 from .schema_loader import SchemaLoader
 from .query_parser import QueryParser
 from .config import SQL_SERVER, SQL_DATABASE, AZURE_SUBSCRIPTION_ID, AZURE_RESOURCE_GROUP
 
+# Try to import AI parsers
+try:
+    from .local_ai_query_parser import LocalAIQueryParser
+    HAS_LOCAL_AI = True
+except ImportError:
+    HAS_LOCAL_AI = False
+
+try:
+    from .ai_query_parser import AIQueryParser
+    HAS_CLOUD_AI = True
+except ImportError:
+    HAS_CLOUD_AI = False
+
 
 class MCPTools:
-    """MCP Tools for SQL Server operations"""
+    """MCP Tools for SQL Server operations with AI-enhanced query parsing"""
     
-    def __init__(self, schema_loader: SchemaLoader):
+    def __init__(self, schema_loader: SchemaLoader, ai_config: Optional[Dict] = None):
         self.sql_client = MSSQLRestClient()
         self.schema_loader = schema_loader
-        self.query_parser = QueryParser(schema_loader)
+        self.ai_config = ai_config or {}
+        
+        # Initialize query parsers
+        self.query_parser = QueryParser(schema_loader)  # Fallback parser
+        
+        # Initialize AI parsers if available
+        self.ai_parser = None
+        self.local_ai_parser = None
+        
+        if self.ai_config.get('use_ai', False):
+            self._initialize_ai_parsers()
+    
+    def _initialize_ai_parsers(self):
+        """Initialize AI parsers based on configuration"""
+        ai_type = self.ai_config.get('ai_type', 'local')  # 'local', 'cloud', or 'hybrid'
+        
+        if ai_type in ['local', 'hybrid'] and HAS_LOCAL_AI:
+            try:
+                local_config = self.ai_config.get('local_ai', {})
+                self.local_ai_parser = LocalAIQueryParser(self.schema_loader, local_config)
+                print("✅ Local AI parser initialized")
+            except Exception as e:
+                print(f"⚠️ Failed to initialize local AI parser: {e}")
+        
+        if ai_type in ['cloud', 'hybrid'] and HAS_CLOUD_AI:
+            try:
+                cloud_config = self.ai_config.get('cloud_ai', {})
+                self.ai_parser = AIQueryParser(self.schema_loader, cloud_config)
+                print("✅ Cloud AI parser initialized")
+            except Exception as e:
+                print(f"⚠️ Failed to initialize cloud AI parser: {e}")
+    
+    def _select_best_parser(self, user_question: str) -> Any:
+        """Select the best available parser for the query"""
+        # Priority: Local AI > Cloud AI > Rule-based
+        if self.local_ai_parser:
+            return self.local_ai_parser
+        elif self.ai_parser:
+            return self.ai_parser
+        else:
+            return self.query_parser
     
     async def parse_user_query(self, user_question: str) -> Dict[str, Any]:
         """
         Parse a natural language question and extract table names, column names, and conditions.
+        Now with AI-enhanced parsing capabilities.
 
         Args:
             user_question: A natural language question about the data
@@ -29,13 +83,20 @@ class MCPTools:
         try:
             print(f"Parsing user question: {user_question}")
             
-            # Parse the user question using existing query parser
-            query_info = self.query_parser.parse_user_query(user_question)
+            # Select the best available parser
+            parser = self._select_best_parser(user_question)
+            parser_type = type(parser).__name__
+            
+            print(f"Using parser: {parser_type}")
+            
+            # Parse the user question using selected parser
+            query_info = parser.parse_user_query(user_question)
             
             if 'error' in query_info:
                 return {
                     "success": False,
                     "error": query_info['error'],
+                    "parser_used": parser_type,
                     "suggestions": [
                         "Try asking about products, or request counts",
                         "Include specific dates like '2024-01' or time periods",
@@ -45,22 +106,40 @@ class MCPTools:
                     ]
                 }
             
-            return {
+            # Enhance response with metadata
+            result = {
                 "success": True,
                 "table_name": query_info['table_name'],
                 "columns": query_info['columns'],
                 "where_clause": query_info['where_clause'] if query_info['where_clause'] != "1=1" else "",
                 "order_clause": query_info['order_clause'] if query_info['order_clause'] else "",
                 "limit_clause": query_info['limit_clause'] if query_info['limit_clause'] else "",
-                "original_question": user_question
+                "original_question": user_question,
+                "parser_used": parser_type,
+                "ai_enhanced": query_info.get('ai_parsed', False)
             }
+            
+            # Add AI-specific metadata if available
+            if query_info.get('ai_parsed'):
+                result.update({
+                    "ai_model": query_info.get('ai_model', 'unknown'),
+                    "confidence": query_info.get('confidence', 'not_provided'),
+                    "reasoning": query_info.get('reasoning', 'not_provided')
+                })
+            
+            if query_info.get('fallback_used'):
+                result["fallback_used"] = True
+                result["warning"] = "AI parsing failed, used rule-based fallback"
+            
+            return result
             
         except Exception as e:
             print(f"Error parsing query: {str(e)}")
             return {
                 "success": False,
                 "error": f"Error parsing your question: {str(e)}",
-                "suggestion": "Try asking questions like: 'Show me top 10 customers', 'What products were used this month?', 'Which customers have high request counts?'"
+                "suggestion": "Try asking questions like: 'Show me top 10 customers', 'What products were used this month?', 'Which customers have high request counts?'",
+                "parser_used": "error_fallback"
             }
 
     async def execute_sql_with_auth(self, table_name: str, columns: list, where_clause: str = "", order_clause: str = "", limit_clause: str = "") -> Dict[str, Any]:
