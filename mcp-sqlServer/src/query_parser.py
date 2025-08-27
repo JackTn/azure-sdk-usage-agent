@@ -5,7 +5,7 @@ import re
 from typing import Any, Dict, List, Optional
 from .models import QueryInfo
 from .schema_loader import SchemaLoader
-from .product_aliases import ProductAliasMapper
+from .product_aliases import UniversalAliasMapper
 
 
 class QueryParser:
@@ -13,7 +13,7 @@ class QueryParser:
     
     def __init__(self, schema_loader: SchemaLoader):
         self.schema_loader = schema_loader
-        self.product_mapper = ProductAliasMapper()
+        self.alias_mapper = UniversalAliasMapper()
         self._enum_cache = {}
     
     def _get_enum_values(self, enum_name: str) -> List[str]:
@@ -57,7 +57,7 @@ class QueryParser:
                 # Get available products for this table (from schema)
                 available_products = self._get_enum_values('Product') if hasattr(self, '_get_enum_values') else []
                 if available_products:
-                    matched_products = self.product_mapper.find_products_by_query(query_lower, available_products)
+                    matched_products = self.alias_mapper.find_products_by_query(query_lower, available_products)
                     if matched_products:
                         score += 3  # High score for product match
             if 'request' in query_lower and ('req' in table_name or 'request' in description):
@@ -204,7 +204,7 @@ class QueryParser:
         # Product filtering with alias support
         if 'Product' in available_columns:
             product_enum = self._get_enum_values('Product')
-            matched_products = self.product_mapper.find_products_by_query(query_lower, product_enum)
+            matched_products = self.alias_mapper.find_products_by_query(query_lower, product_enum)
             
             if matched_products:
                 if len(matched_products) == 1:

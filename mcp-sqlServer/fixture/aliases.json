@@ -1,0 +1,527 @@
+{
+  "product_aliases": {
+    "js": [
+      "JavaScript",
+      "JavaScript (Node.JS)",
+      "JavaScript RLC"
+    ],
+    "javascript": [
+      "JavaScript",
+      "JavaScript (Node.JS)",
+      "JavaScript RLC"
+    ],
+    "node": [
+      "JavaScript (Node.JS)"
+    ],
+    "nodejs": [
+      "JavaScript (Node.JS)"
+    ],
+    "node.js": [
+      "JavaScript (Node.JS)"
+    ],
+    "rlc": [
+      "JavaScript RLC"
+    ],
+    "rest": [
+      "JavaScript RLC"
+    ],
+    ".net": [
+      ".Net Code-gen",
+      ".Net Fluent"
+    ],
+    "dotnet": [
+      ".Net Code-gen",
+      ".Net Fluent"
+    ],
+    "csharp": [
+      ".Net Code-gen",
+      ".Net Fluent"
+    ],
+    "c#": [
+      ".Net Code-gen",
+      ".Net Fluent"
+    ],
+    "net": [
+      ".Net Code-gen",
+      ".Net Fluent"
+    ],
+    "cs": [
+      ".Net Code-gen",
+      ".Net Fluent"
+    ],
+    "java": [
+      "Java Fluent Lite",
+      "Java Fluent Premium"
+    ],
+    "jdk": [
+      "Java Fluent Lite",
+      "Java Fluent Premium"
+    ],
+    "python": [
+      "Python-SDK"
+    ],
+    "py": [
+      "Python-SDK"
+    ],
+    "python3": [
+      "Python-SDK"
+    ],
+    "pip": [
+      "Python-SDK"
+    ],
+    "go": [
+      "Go-SDK"
+    ],
+    "golang": [
+      "Go-SDK"
+    ],
+    "gopher": [
+      "Go-SDK"
+    ],
+    "php": [
+      "PHP-SDK"
+    ],
+    "ruby": [
+      "Ruby-SDK"
+    ],
+    "rb": [
+      "Ruby-SDK"
+    ],
+    "rust": [
+      "Rust"
+    ],
+    "rs": [
+      "Rust"
+    ],
+    "rustlang": [
+      "Rust"
+    ],
+    "cli": [
+      "AzureCLI"
+    ],
+    "azure-cli": [
+      "AzureCLI"
+    ],
+    "az": [
+      "AzureCLI"
+    ],
+    "command-line": [
+      "AzureCLI"
+    ],
+    "powershell": [
+      "AzurePowershell"
+    ],
+    "ps": [
+      "AzurePowershell"
+    ],
+    "pwsh": [
+      "AzurePowershell"
+    ],
+    "ps1": [
+      "AzurePowershell"
+    ],
+    "terraform": [
+      "Terraform"
+    ],
+    "tf": [
+      "Terraform"
+    ],
+    "hcl": [
+      "Terraform"
+    ],
+    "ansible": [
+      "Ansible"
+    ],
+    "playbook": [
+      "Ansible"
+    ],
+    "vscode": [
+      "VS Code Azure Extension"
+    ],
+    "vs-code": [
+      "VS Code Azure Extension"
+    ],
+    "visual-studio-code": [
+      "VS Code Azure Extension"
+    ],
+    "code": [
+      "VS Code Azure Extension"
+    ],
+    "ai": [
+      "artificial intelligence",
+      "machine learning", 
+      "ML",
+      "cognitive services"
+    ]
+  },
+  "os_aliases": {
+    "windows": [
+      "Windows"
+    ],
+    "win": [
+      "Windows"
+    ],
+    "microsoft": [
+      "Windows"
+    ],
+    "ms": [
+      "Windows"
+    ],
+    "win10": [
+      "Windows"
+    ],
+    "win11": [
+      "Windows"
+    ],
+    "linux": [
+      "Linux"
+    ],
+    "ubuntu": [
+      "Linux"
+    ],
+    "debian": [
+      "Linux"
+    ],
+    "centos": [
+      "Linux"
+    ],
+    "rhel": [
+      "Linux"
+    ],
+    "redhat": [
+      "Linux"
+    ],
+    "fedora": [
+      "Linux"
+    ],
+    "suse": [
+      "Linux"
+    ],
+    "unix": [
+      "Linux"
+    ],
+    "macos": [
+      "macOS"
+    ],
+    "mac": [
+      "macOS"
+    ],
+    "osx": [
+      "macOS"
+    ],
+    "apple": [
+      "macOS"
+    ],
+    "darwin": [
+      "macOS"
+    ]
+  },
+  "http_method_aliases": {
+    "get": [
+      "GET"
+    ],
+    "read": [
+      "GET"
+    ],
+    "fetch": [
+      "GET"
+    ],
+    "retrieve": [
+      "GET"
+    ],
+    "query": [
+      "GET"
+    ],
+    "post": [
+      "POST"
+    ],
+    "create": [
+      "POST"
+    ],
+    "add": [
+      "POST"
+    ],
+    "insert": [
+      "POST"
+    ],
+    "new": [
+      "POST"
+    ],
+    "put": [
+      "PUT"
+    ],
+    "update": [
+      "PUT"
+    ],
+    "modify": [
+      "PUT"
+    ],
+    "change": [
+      "PUT"
+    ],
+    "edit": [
+      "PUT"
+    ],
+    "delete": [
+      "DELETE"
+    ],
+    "remove": [
+      "DELETE"
+    ],
+    "del": [
+      "DELETE"
+    ],
+    "destroy": [
+      "DELETE"
+    ],
+    "patch": [
+      "PATCH"
+    ],
+    "partial": [
+      "PATCH"
+    ]
+  },
+  "provider_aliases": {
+    "compute": [
+      "Microsoft.Compute"
+    ],
+    "vm": [
+      "Microsoft.Compute"
+    ],
+    "virtual-machine": [
+      "Microsoft.Compute"
+    ],
+    "server": [
+      "Microsoft.Compute"
+    ],
+    "storage": [
+      "Microsoft.Storage"
+    ],
+    "blob": [
+      "Microsoft.Storage"
+    ],
+    "file": [
+      "Microsoft.Storage"
+    ],
+    "disk": [
+      "Microsoft.Storage"
+    ],
+    "network": [
+      "Microsoft.Network"
+    ],
+    "networking": [
+      "Microsoft.Network"
+    ],
+    "vnet": [
+      "Microsoft.Network"
+    ],
+    "subnet": [
+      "Microsoft.Network"
+    ],
+    "nsg": [
+      "Microsoft.Network"
+    ],
+    "web": [
+      "Microsoft.Web"
+    ],
+    "webapp": [
+      "Microsoft.Web"
+    ],
+    "app-service": [
+      "Microsoft.Web"
+    ],
+    "website": [
+      "Microsoft.Web"
+    ],
+    "sql": [
+      "Microsoft.Sql"
+    ],
+    "database": [
+      "Microsoft.Sql"
+    ],
+    "db": [
+      "Microsoft.Sql"
+    ],
+    "mysql": [
+      "Microsoft.DBforMySQL"
+    ],
+    "postgresql": [
+      "Microsoft.DBforPostgreSQL"
+    ],
+    "cosmos": [
+      "Microsoft.DocumentDB"
+    ],
+    "cosmosdb": [
+      "Microsoft.DocumentDB"
+    ],
+    "container": [
+      "Microsoft.ContainerService"
+    ],
+    "aks": [
+      "Microsoft.ContainerService"
+    ],
+    "kubernetes": [
+      "Microsoft.ContainerService"
+    ],
+    "k8s": [
+      "Microsoft.ContainerService"
+    ],
+    "keyvault": [
+      "Microsoft.KeyVault"
+    ],
+    "vault": [
+      "Microsoft.KeyVault"
+    ],
+    "secret": [
+      "Microsoft.KeyVault"
+    ],
+    "certificate": [
+      "Microsoft.KeyVault"
+    ]
+  },
+  "resource_aliases": {
+    "vm": [
+      "virtualMachines"
+    ],
+    "virtual-machine": [
+      "virtualMachines"
+    ],
+    "server": [
+      "virtualMachines"
+    ],
+    "instance": [
+      "virtualMachines"
+    ],
+    "storage-account": [
+      "storageAccounts"
+    ],
+    "blob": [
+      "storageAccounts"
+    ],
+    "storage": [
+      "storageAccounts"
+    ],
+    "vnet": [
+      "virtualNetworks"
+    ],
+    "virtual-network": [
+      "virtualNetworks"
+    ],
+    "network": [
+      "virtualNetworks"
+    ],
+    "subnet": [
+      "subnets"
+    ],
+    "nsg": [
+      "networkSecurityGroups"
+    ],
+    "security-group": [
+      "networkSecurityGroups"
+    ],
+    "webapp": [
+      "webApps"
+    ],
+    "web-app": [
+      "webApps"
+    ],
+    "app-service": [
+      "webApps"
+    ],
+    "website": [
+      "webApps"
+    ],
+    "sql-server": [
+      "sqlServers"
+    ],
+    "database": [
+      "databases"
+    ],
+    "db": [
+      "databases"
+    ],
+    "aks": [
+      "kubernetesClusters"
+    ],
+    "kubernetes": [
+      "kubernetesClusters"
+    ],
+    "k8s": [
+      "kubernetesClusters"
+    ],
+    "cluster": [
+      "kubernetesClusters"
+    ],
+    "keyvault": [
+      "keyVaults"
+    ],
+    "vault": [
+      "keyVaults"
+    ]
+  },
+  "time_aliases": {
+    "today": "2025-08-28",
+    "this-month": "2025-08",
+    "current-month": "2025-08",
+    "last-month": "2025-07",
+    "previous-month": "2025-07",
+    "this-year": "2025",
+    "current-year": "2025",
+    "last-year": "2024",
+    "previous-year": "2024",
+    "recent": "ORDER BY Month DESC",
+    "latest": "ORDER BY Month DESC",
+    "newest": "ORDER BY Month DESC",
+    "oldest": "ORDER BY Month ASC",
+    "earliest": "ORDER BY Month ASC"
+  },
+  "quantity_aliases": {
+    "top": "TOP",
+    "first": "TOP",
+    "limit": "TOP",
+    "most": "ORDER BY [count_column] DESC",
+    "highest": "ORDER BY [count_column] DESC",
+    "maximum": "ORDER BY [count_column] DESC",
+    "least": "ORDER BY [count_column] ASC",
+    "lowest": "ORDER BY [count_column] ASC",
+    "minimum": "ORDER BY [count_column] ASC",
+    "total": "SUM([count_column])",
+    "sum": "SUM([count_column])",
+    "count": "COUNT(*)",
+    "number": "COUNT(*)",
+    "average": "AVG([count_column])",
+    "avg": "AVG([count_column])"
+  },
+  "comparison_aliases": {
+    "more-than": "> {value}",
+    "greater-than": "> {value}",
+    "above": "> {value}",
+    "less-than": "< {value}",
+    "below": "< {value}",
+    "under": "< {value}",
+    "at-least": ">= {value}",
+    "minimum-of": ">= {value}",
+    "at-most": "<= {value}",
+    "maximum-of": "<= {value}",
+    "exactly": "= {value}",
+    "equal-to": "= {value}"
+  },
+  "_metadata": {
+    "version": "1.0.0",
+    "last_updated": "2025-08-28",
+    "description": "Comprehensive alias mappings for Azure SDK usage analysis",
+    "supported_languages": [
+      "en"
+    ],
+    "categories": [
+      "product_aliases",
+      "os_aliases",
+      "http_method_aliases",
+      "provider_aliases",
+      "resource_aliases",
+      "time_aliases",
+      "quantity_aliases",
+      "comparison_aliases"
+    ]
+  }
+}

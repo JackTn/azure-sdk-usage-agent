@@ -5,7 +5,7 @@ from typing import Any, Dict, List
 from .sql_client import MSSQLRestClient
 from .schema_loader import SchemaLoader
 from .query_parser import QueryParser
-from .product_aliases import ProductAliasMapper
+from .product_aliases import UniversalAliasMapper
 from .config import SQL_SERVER, SQL_DATABASE, AZURE_SUBSCRIPTION_ID, AZURE_RESOURCE_GROUP
 
 
@@ -16,7 +16,7 @@ class SimpleMCPTools:
         self.sql_client = MSSQLRestClient()
         self.schema_loader = schema_loader
         self.query_parser = QueryParser(schema_loader)  # 保留基础解析作为备用
-        self.product_mapper = ProductAliasMapper()  # 添加产品别名映射器
+        self.alias_mapper = UniversalAliasMapper()  # 添加通用别名映射器
     
     async def get_available_tables_and_columns(self) -> Dict[str, Any]:
         """
@@ -34,59 +34,28 @@ class SimpleMCPTools:
                     col_detail = {'name': col}
                     if col in table_info.column_metadata:
                         meta = table_info.column_metadata[col]
+                        
+                        # 使用通用别名映射器获取增强的列信息
+                        enhanced_meta = self.alias_mapper.get_enhanced_column_info(col, meta)
+                        
                         col_detail.update({
-                            'type': meta.get('type', 'string'),
-                            'description': meta.get('description', ''),
-                            'enum_values': meta.get('enum')[:10] if meta.get('enum') else None  # 只返回前10个示例
+                            'type': enhanced_meta.get('type', 'string'),
+                            'description': enhanced_meta.get('description', ''),
+                            'enum_values': enhanced_meta.get('enum')[:10] if enhanced_meta.get('enum') else None
                         })
                         
-                        # 为特定列添加别名信息
-                        if col == 'Product' and meta.get('enum'):
-                            # 为每个产品添加别名信息
-                            product_aliases = {}
-                            for product in meta.get('enum', []):
-                                aliases = list(self.product_mapper.get_aliases_for_product(product))
-                                if aliases:
-                                    product_aliases[product] = aliases
-                            
-                            if product_aliases:
-                                col_detail['product_aliases'] = product_aliases
-                                col_detail['alias_examples'] = {
-                                    'js_javascript': 'js, javascript, node → JavaScript products',
-                                    'python': 'python, py → Python-SDK',
-                                    'dotnet': '.net, csharp, c# → .Net products',
-                                    'java': 'java → Java products',
-                                    'go': 'go, golang → Go-SDK'
-                                }
+                        # 添加别名信息（如果有的话）
+                        if enhanced_meta.get('product_aliases'):
+                            col_detail['product_aliases'] = enhanced_meta['product_aliases']
                         
-                        # 为其他可能有别名的列添加提示
-                        elif col == 'OS':
-                            col_detail['common_aliases'] = {
-                                'windows': 'win, windows, microsoft',
-                                'linux': 'linux, ubuntu, debian, centos',
-                                'macos': 'mac, macos, osx, apple'
-                            }
-                        elif col == 'HttpMethod':
-                            col_detail['common_aliases'] = {
-                                'GET': 'get, read, fetch',
-                                'POST': 'post, create, add',
-                                'PUT': 'put, update, modify',
-                                'DELETE': 'delete, remove'
-                            }
-                        elif col == 'Provider':
-                            col_detail['common_patterns'] = {
-                                'compute': 'Microsoft.Compute, VM, virtual machines',
-                                'storage': 'Microsoft.Storage, blob, storage accounts',
-                                'network': 'Microsoft.Network, VNet, networking',
-                                'web': 'Microsoft.Web, app service, websites'
-                            }
-                        elif col == 'Resource':
-                            col_detail['common_patterns'] = {
-                                'vm': 'virtualMachines, VM, virtual machines',
-                                'storage': 'storageAccounts, blob, storage',
-                                'network': 'virtualNetworks, VNet, subnet',
-                                'webapp': 'webApps, app service, websites'
-                            }
+                        if enhanced_meta.get('alias_examples'):
+                            col_detail['alias_examples'] = enhanced_meta['alias_examples']
+                        
+                        if enhanced_meta.get('common_aliases'):
+                            col_detail['common_aliases'] = enhanced_meta['common_aliases']
+                        
+                        if enhanced_meta.get('common_patterns'):
+                            col_detail['common_patterns'] = enhanced_meta['common_patterns']
                     
                     column_details.append(col_detail)
                 
@@ -119,27 +88,9 @@ class SimpleMCPTools:
             
             # 添加全局别名信息供 AI 参考
             global_aliases = {
-                "product_aliases": self.product_mapper.get_all_aliases(),
-                "common_patterns": {
-                    "time_expressions": {
-                        "this_month": "2025-08",
-                        "last_month": "2025-07", 
-                        "this_year": "2025",
-                        "recent": "ORDER BY Month DESC"
-                    },
-                    "quantity_expressions": {
-                        "top_n": "SELECT TOP N",
-                        "most": "ORDER BY [count_column] DESC",
-                        "least": "ORDER BY [count_column] ASC",
-                        "total": "SUM([count_column])"
-                    },
-                    "comparison_expressions": {
-                        "more_than": "> value",
-                        "less_than": "< value",
-                        "at_least": ">= value",
-                        "exactly": "= value"
-                    }
-                }
+                "all_aliases": self.alias_mapper.get_all_aliases(),
+                "common_patterns": self.alias_mapper.get_global_patterns(),
+                "metadata": self.alias_mapper.get_metadata()
             }
             
             return {
