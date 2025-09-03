@@ -2,6 +2,9 @@
 
 A Model Context Protocol (MCP) server that transforms natural language questions into SQL queries for Azure SQL Server databases.
 
+## [Reference](https://github.com/Azure-Samples/mcp-sdk-functions-hosting-python)
+
+
 ## Features
 
 - **Natural Language to SQL**: Convert plain English questions to SQL queries
