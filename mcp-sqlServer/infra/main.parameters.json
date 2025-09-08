@@ -7,6 +7,15 @@
     },
     "location": {
       "value": "${AZURE_LOCATION}"
+    },
+    "apiServiceName": {
+      "value": "${AZURE_API_SERVICE_NAME}"
+    },
+    "appServicePlanName": {
+      "value": "${AZURE_APP_SERVICE_PLAN_NAME}"
+    },
+    "storageAccountName": {
+      "value": "${AZURE_STORAGE_ACCOUNT_NAME}"
     }
   }
 }

@@ -4,5 +4,5 @@ services:
     project: .
     host: function
     language: python
-    resourceGroup: openai-shared
-    resourceName: mcp-mssqlquery
+    resourceGroup: ${AZURE_RESOURCE_GROUP}
+    resourceName: ${SERVICE_API_NAME}
