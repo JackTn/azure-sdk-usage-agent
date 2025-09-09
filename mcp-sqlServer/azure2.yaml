@@ -1,0 +1,8 @@
+name: mcp-azure0sdkdata
+services:
+  api:
+    project: .
+    host: function
+    language: python
+    resourceGroup: ${AZURE_RESOURCE_GROUP}
+    resourceName: ${SERVICE_API_NAME}
