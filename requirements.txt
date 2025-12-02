@@ -3,3 +3,4 @@ mcp>=1.5.0
 azure-identity
 pyodbc
 azure-kusto-data
+requests>=2.32.0
